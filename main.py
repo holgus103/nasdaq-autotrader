@@ -1,15 +1,14 @@
-import requests;
+from application_state import ApplicationState
 import time;
-import json;
+import data_retrieval;
+import trading_algo;
+import const;
 
-url = 'https://www.google.com/async/finance_wholepage_price_updates?ei=8-ASYJS0LZnT1fAPw-q6-AI&client=firefox-b-d&yv=3&async=mids:%2Fm%2F02fhwv,currencies:,_fmt:jspb'
+application_state : ApplicationState = trading_algo.NaiveState()
 
 while 1:
-   res = requests.get(url);
-   text = res.text;
-   text = text[5:];
-   jsonData = json.loads(text);
-   symbolName = jsonData["PriceUpdate"][0][0][0][17][1];
-   symbolPrice = jsonData["PriceUpdate"][0][0][0][17][4];
-   print('{0} - {1}'.format(symbolName, symbolPrice));
+   (ticker, price) = data_retrieval.updateData(const.url);
+   application_state.history_tick(val=price);
+   # process current state
+   application_state.evaluate_situation();
    time.sleep(10);
