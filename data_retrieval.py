@@ -1,7 +1,10 @@
 import requests;
 import json;
+from typing import Any, Tuple
 
-def updateData(url):
+from requests.models import Response;
+
+def updateData(url: str) -> Tuple[str, float]:
    """
       Returns the symbol and the price of an asset.
       Parameters
@@ -10,14 +13,14 @@ def updateData(url):
 
       Returns 
       -----------
-      tuple 
+      Tuple[str, float] 
       (symbol name, symbol price)
    """
-   res = requests.get(url);
-   text = res.text;
+   res: Response = requests.get(url);
+   text: str = res.text;
    text = text[5:];
-   jsonData = json.loads(text);
-   symbolName = jsonData["PriceUpdate"][0][0][0][17][1];
-   symbolPrice = jsonData["PriceUpdate"][0][0][0][17][4];
+   jsonData : Any = json.loads(text);
+   symbolName: str = jsonData["PriceUpdate"][0][0][0][17][1];
+   symbolPrice: str = jsonData["PriceUpdate"][0][0][0][17][4];
    print('{0} - {1}'.format(symbolName, symbolPrice));
    return (symbolName, symbolPrice);

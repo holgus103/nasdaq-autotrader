@@ -8,7 +8,7 @@ application_state : ApplicationState = trading_algo.NaiveState()
 
 while 1:
    (ticker, price) = data_retrieval.updateData(const.url);
-   application_state.history_tick(val=price);
+   application_state.history_tick(price);
    # process current state
    application_state.evaluate_situation();
    time.sleep(10);
